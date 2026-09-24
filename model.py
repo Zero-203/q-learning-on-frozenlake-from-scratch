@@ -42,11 +42,22 @@ def should_explore(epsilon, rng):
     sample = rng.random(1)
     return bool(sample<epsilon)
 
-# Step 6 - epsilon_greedy_action (not yet solved)
-# TODO: implement
+# Step 6 - epsilon_greedy_action
+import numpy as np
 
-# Step 7 - decay_epsilon (not yet solved)
-# TODO: implement
+def epsilon_greedy_action(q_table, state, epsilon, action_space, rng):
+    """Return an epsilon-greedy action for the given state."""
+    # TODO: with prob epsilon explore via action_space, else pick a max-Q action (random among ties)
+    explore = should_explore(epsilon,rng)
+    if explore:
+        return sample_random_action(action_space)
+    else:
+        return greedy_action(q_table,state)
+
+# Step 7 - decay_epsilon
+def decay_epsilon(epsilon, decay_rate, min_epsilon):
+    # TODO: return max(min_epsilon, epsilon * decay_rate)
+    return max(min_epsilon,epsilon*decay_rate)
 
 # Step 8 - td_target (not yet solved)
 # TODO: implement
