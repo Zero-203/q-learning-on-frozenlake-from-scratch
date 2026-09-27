@@ -90,8 +90,7 @@ def interaction_step(env, q_table, state, epsilon, alpha, gamma, rng):
 # Step 12 - run_training_episode
 def run_training_episode(env, q_table, epsilon, alpha, gamma, rng, max_steps=200):
     # TODO: reset env, then repeatedly call interaction_step until done or max_steps, returning total reward.
-    env.reset()
-    state = 0
+    state, _ = env.reset()
     tol_reward = 0.0
     for i in range(max_steps):
         state, cur_reward, done=interaction_step(env,q_table,state,epsilon,alpha,gamma,rng)
@@ -100,8 +99,22 @@ def run_training_episode(env, q_table, epsilon, alpha, gamma, rng, max_steps=200
             break
     return tol_reward
 
-# Step 13 - train_q_learning (not yet solved)
-# TODO: implement
+# Step 13 - train_q_learning
+import numpy as np
+
+def train_q_learning(env, num_episodes, alpha=0.8, gamma=0.95, epsilon_start=1.0, epsilon_min=0.01, epsilon_decay=0.99, seed=0, max_steps=200):
+    # TODO: train a Q-learning agent for num_episodes; return (q_table, returns)
+    rng = np.random.default_rng(seed)
+    env.reset(seed=seed)
+    returns = []
+    q_table = init_q_table(env.observation_space.n,env.action_space.n)
+    epsilon = epsilon_start
+    for epoch in range(num_episodes):
+        env.reset(seed=seed)
+        cur_return = run_training_episode(env,q_table,epsilon,alpha,gamma,rng)
+        returns.append(cur_return)
+        epsilon = decay_epsilon(epsilon,epsilon_decay,epsilon_min)
+    return q_table,returns
 
 # Step 14 - extract_greedy_policy (not yet solved)
 # TODO: implement
