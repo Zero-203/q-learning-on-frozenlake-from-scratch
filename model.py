@@ -105,19 +105,22 @@ import numpy as np
 def train_q_learning(env, num_episodes, alpha=0.8, gamma=0.95, epsilon_start=1.0, epsilon_min=0.01, epsilon_decay=0.99, seed=0, max_steps=200):
     # TODO: train a Q-learning agent for num_episodes; return (q_table, returns)
     rng = np.random.default_rng(seed)
+    env.action_space.seed(seed)
     env.reset(seed=seed)
     returns = []
     q_table = init_q_table(env.observation_space.n,env.action_space.n)
     epsilon = epsilon_start
     for epoch in range(num_episodes):
-        env.reset(seed=seed)
         cur_return = run_training_episode(env,q_table,epsilon,alpha,gamma,rng)
         returns.append(cur_return)
         epsilon = decay_epsilon(epsilon,epsilon_decay,epsilon_min)
     return q_table,returns
 
-# Step 14 - extract_greedy_policy (not yet solved)
-# TODO: implement
+# Step 14 - extract_greedy_policy
+def extract_greedy_policy(q_table):
+    # TODO: return a 1D int64 array mapping each state to its best (argmax) action.
+    greed_selection = np.argmax(q_table,axis=1)
+    return greed_selection
 
 # Step 15 - run_greedy_episode (not yet solved)
 # TODO: implement
